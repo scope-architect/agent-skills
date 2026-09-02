@@ -79,11 +79,13 @@ Legacy name params (`module_name`, `deliverable_name`, `task_desc`) still work b
 
 ## Naming Map (UI ↔ scope)
 
-| UI Term | Scope field |
-|---------|-------------|
-| Module | `modules[].name` |
-| Deliverable | `features[].technicalDesc` |
-| Task | `tasks[].technicalDesc` |
+| UI Term | Short name | Detailed description |
+|---------|------------|----------------------|
+| Module | `modules[].name` | `modules[].technicalDesc` |
+| Feature (Deliverable) | `features[].title` | `features[].technicalDesc` |
+| Task | `tasks[].title` | `tasks[].technicalDesc` |
+
+**When talking to humans, refer to items by their `title` (or module `name`) — never by raw ID.** IDs are tool arguments only. Keep `title` short (≤ ~80 chars); put detail in `technicalDesc` and discrete steps in `acceptanceCriteria`. On `add_task`/`add_feature`/`edit_task`, always set a short `title`.
 
 ## Task Workflow
 
@@ -184,6 +186,10 @@ Fallback (legacy): `update_task_status(..., blocked)` + `post_comment` with @men
 - **`set_dependencies`** — task ordering must be enforced
 
 Always call `get_project` first to check what already exists before adding anything.
+
+## Autopilot (unattended loop)
+
+When the user says "run the module", "keep going until done", or leaves you to work unattended, loop on the scope: `get_next_ready_task` → `in_progress` → implement → verify criteria → `link_artifact` → `done` → `post_comment` → repeat. The scope is the only loop state; never keep a private task list. Stop when nothing is ready, a task is blocked under a `pause` policy, the user's budget (tasks/time/cost) is reached, or the same task fails three times. Full rules live in the `autopilot` skill (installed alongside this one by `npx skills add scope-architect/agent-skills`).
 
 ## Stay On Scope
 
