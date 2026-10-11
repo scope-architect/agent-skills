@@ -169,14 +169,11 @@ Do not use any delete operation. If a task can't be completed:
    - `read_comments` on that `task_id` if you need full thread context
 4. **`update_task_status(..., in_progress)`** then apply the human's answer and complete the blocked task — do **not** ask them to type "continue" in the terminal.
 
-### Optional: sync (single-task only)
+### Waiting on the hosted server
 
-If you are **only** working this one task until the human answers:
+`await_human_reply` is not available over the hosted MCP endpoint (it long-polls for up to two hours, longer than any HTTP request can hold). After `request_clarification`, leave the task `blocked`, work other agent-ready tasks or stop, and check `get_next_ready_task` — it returns `human_reply_pending` with the answer once someone replies. In a cloud run, stopping is correct: the run resumes on its own when the human replies.
 
-1. `request_clarification` → then `await_human_reply({ project_id, task_id })` (blocks until they reply in SA Comments)  
-2. Continue immediately with the returned body.
-
-Fallback (legacy): `update_task_status(..., blocked)` + `post_comment` with @mention, then check in with `get_active_agent_runs` / `read_comments`.
+`await_human_reply` only exists on the local stdio server (`npx @scope-architect/mcp`), for a single-task session that wants to block in place.
 
 ## When to Add or Edit Scope
 
