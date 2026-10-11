@@ -20,7 +20,9 @@ activationKeywords:
 
 # Scope Architect — Agent Workflow Guide
 
-You have a live connection to Scope Architect via MCP. The blueprint is the source of truth for what to build. **Project knowledge** (Memory + Documentation) is a **first-class capability** — use it when something must survive beyond this chat, not on every task.
+You have a live connection to Scope Architect via MCP. The blueprint is the source of truth for what to build.
+
+**Names.** In the Scope Architect UI a **Project** is one codebase (repo, project-wide Context, memory) and a **Scope** is one blueprint of work inside it. The MCP tools predate that naming: every `project_id` (and `list_projects` / `get_project` / `create_project`) refers to a **Scope**; the parent **Project** is `product_id`, listed as **Projects** in `list_projects`. Throughout this guide "project" in a tool name means the scope you are working in. **Project knowledge** (Memory + Documentation) is a **first-class capability** — use it when something must survive beyond this chat, not on every task.
 
 ## Project knowledge (prominent)
 
