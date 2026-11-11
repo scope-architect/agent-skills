@@ -112,7 +112,7 @@ Unless project **Context**, a user message, or another skill says to skip it:
 
 1. **`get_project`** and review modules/tasks with the user (in chat or `post_comment` on the project).
 2. Align on what is **in scope** vs deferred: `mark_agent_ready(false)` on irrelevant tasks, note exclusions in a project comment.
-3. **`add_task` / `add_feature`** for missing work you already know you'll need — before implementation.
+3. **`query_scope`** to check whether the work is already scoped, then **`add_task` / `add_feature`** only for what is missing — before implementation.
 4. Confirm the **next task_id** and order, then start work.
 
 This is how real teams use Scope Architect; skipping it hides product gaps.
@@ -172,8 +172,6 @@ Do not use any delete operation. If a task can't be completed:
 ### Waiting on the hosted server
 
 `await_human_reply` is not available over the hosted MCP endpoint (it long-polls for up to two hours, longer than any HTTP request can hold). After `request_clarification`, leave the task `blocked`, work other agent-ready tasks or stop, and check `get_next_ready_task` — it returns `human_reply_pending` with the answer once someone replies. In a cloud run, stopping is correct: the run resumes on its own when the human replies.
-
-`await_human_reply` only exists on the local stdio server (`npx @scope-architect/mcp`), for a single-task session that wants to block in place.
 
 ## When to Add or Edit Scope
 
